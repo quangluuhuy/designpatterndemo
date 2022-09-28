@@ -9,7 +9,11 @@ import java.util.List;
  * @author admin
  */
 public class Main {
-
+//xay dung quan li ban hang
+    //danh muc san pham:id,catName
+    //san pham:id, title,price,idCat
+    //1 doi tuong DataMgr quan li danh muc san pham va san pham
+    
     /**
      * @param args the command line arguments
      */
