@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package singleton;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,56 +7,32 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-/**
- *
- * @author admin
- */
 public class JDBCSingleton {
-    //Step 1  
-    // create a JDBCSingleton class.  
-    //static member holds only one instance of the JDBCSingleton class.  
-
     private static JDBCSingleton jdbc;
-
-    //JDBCSingleton prevents the instantiation from any other class.  
     private JDBCSingleton() {
     }
-
-    //Now we are providing gloabal point of access.  
     public static JDBCSingleton getInstance() {
         if (jdbc == null) {
             jdbc = new JDBCSingleton();
         }
         return jdbc;
     }
-
-    // to get the connection from methods like insert, view etc.   
     private static Connection getConnection() throws ClassNotFoundException, SQLException {
-
         Connection con = null;
         Class.forName("com.mysql.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/ashwanirajput", "root", "ashwani");
         return con;
-
     }
-
-    //to insert the record into the database   
     public int insert(String name, String pass) throws SQLException {
         Connection c = null;
-
         PreparedStatement ps = null;
-
         int recordCounter = 0;
-
         try {
-
             c = this.getConnection();
             ps = c.prepareStatement("insert into userdata(uname,upassword)values(?,?)");
             ps.setString(1, name);
             ps.setString(2, pass);
             recordCounter = ps.executeUpdate();
-
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -74,24 +45,18 @@ public class JDBCSingleton {
         }
         return recordCounter;
     }
-
-//to view the data from the database        
     public void view(String name) throws SQLException {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-
-        try {
-
+    try {
             con = this.getConnection();
             ps = con.prepareStatement("select * from userdata where uname=?");
             ps.setString(1, name);
             rs = ps.executeQuery();
             while (rs.next()) {
                 System.out.println("Name= " + rs.getString(2) + "\t" + "Paasword= " + rs.getString(3));
-
             }
-
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -106,12 +71,9 @@ public class JDBCSingleton {
             }
         }
     }
-
-    // to update the password for the given username  
     public int update(String name, String password) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
-
         int recordCounter = 0;
         try {
             c = this.getConnection();
@@ -121,7 +83,6 @@ public class JDBCSingleton {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-
             if (ps != null) {
                 ps.close();
             }
@@ -131,8 +92,6 @@ public class JDBCSingleton {
         }
         return recordCounter;
     }
-
-// to delete the data from the database   
     public int delete(int userid) throws SQLException {
         Connection c = null;
         PreparedStatement ps = null;
